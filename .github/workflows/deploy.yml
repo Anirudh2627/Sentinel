@@ -1,0 +1,138 @@
+# ---------------------------------------------------------------------------
+# Deployment gate + canary deployment.
+#
+# Flow:
+#   download model bundle (from a Train workflow run)
+#       → verify the quality gate PASSED for the chosen version (re-checked)
+#       → produce a deployment plan (always, dry-run)
+#       → [optional] execute canary deployment + controller on a runner that
+#         has the runtime stack (self-hosted runner or docker compose host)
+#
+# No secrets are required for the dry-run path. Executing a real deployment
+# needs infrastructure YOU provide (see docs/deployment.md); the workflow
+# never pretends a deployment happened.
+# ---------------------------------------------------------------------------
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      train_run_id:
+        description: "Run ID of the Train workflow whose bundle to deploy"
+        required: true
+        type: string
+      model_version:
+        description: "Model version to deploy (e.g. v3)"
+        required: true
+        type: string
+      canary_percent:
+        description: "Initial canary traffic percent"
+        required: false
+        default: "5"
+        type: string
+      execute:
+        description: "Actually execute the deployment (requires a runner with the stack)"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    name: Verify quality gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Download model bundle from Train run
+        uses: actions/download-artifact@v4
+        with:
+          # Train uploads "sentinel-model-bundle-<scenario>"; default scenario:
+          name: sentinel-model-bundle-default
+          run-id: ${{ inputs.train_run_id }}
+          path: bundle
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Re-verify gate from the bundle's audit trail
+        run: |
+          python - <<'PY'
+          import json, pathlib, sys
+          version = "${{ inputs.model_version }}"
+          audit = pathlib.Path("bundle/artifacts/audit/deployment_audit.jsonl")
+          if not audit.exists():
+              print(f"::error::Audit trail missing from bundle: {audit}")
+              sys.exit(1)
+          gate_events = []
+          for line in audit.read_text().splitlines():
+              e = json.loads(line)
+              if e.get("action") == "gate_decision" and e.get("model_version") == version:
+                  gate_events.append(e)
+          if not gate_events:
+              print(f"::error::No gate decision found for {version} in the bundle audit trail")
+              sys.exit(1)
+          latest = gate_events[-1]
+          passed = latest.get("context", {}).get("passed")
+          forced = "FORCED" in latest.get("reason", "")
+          if not passed:
+              print(f"::error::Quality gate BLOCKED {version}: {latest.get('reason')}")
+              sys.exit(1)
+          if forced:
+              print(f"::warning::Gate for {version} was FORCED by an operator (audited override)")
+          print(f"Quality gate PASSED for {version}")
+          PY
+
+      - name: Deployment plan (dry-run)
+        run: |
+          {
+            echo "## Deployment plan"
+            echo ""
+            echo '```'
+            echo "sentinel deploy ${{ inputs.model_version }} --percent ${{ inputs.canary_percent }}"
+            echo "sentinel controller --duration 1800 --interval 15 --stop-on-terminal"
+            echo "# on violation  -> automatic rollback (audited)"
+            echo "# on healthy    -> traffic ramp ${{ inputs.canary_percent }}% -> ... -> promote"
+            echo '```'
+            echo ""
+            echo "execute=${{ inputs.execute }}"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload verified bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: verified-bundle-${{ inputs.model_version }}
+          path: bundle/
+          retention-days: 7
+
+  deploy:
+    name: Execute canary deployment
+    needs: gate
+    if: ${{ inputs.execute }}
+    # The `production` environment lets you require manual approval in repo
+    # settings (Settings → Environments). A self-hosted runner with the
+    # Sentinel stack (docker compose) must be labelled `sentinel-deploy`.
+    environment: production
+    runs-on: [self-hosted, sentinel-deploy]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download verified bundle
+        uses: actions/download-artifact@v4
+        with:
+          name: verified-bundle-${{ inputs.model_version }}
+          path: bundle
+
+      - name: Run canary deployment + controller
+        env:
+          MODEL_VERSION: ${{ inputs.model_version }}
+          CANARY_PERCENT: ${{ inputs.canary_percent }}
+        run: bash scripts/ci_deploy.sh bundle

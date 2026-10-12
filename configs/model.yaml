@@ -1,0 +1,97 @@
+# ---------------------------------------------------------------------------
+# Model & data configuration — shared by every environment.
+# Environment profiles (development.yaml / production.yaml) override paths,
+# serving and deployment behaviour. Nothing here contains secrets.
+# ---------------------------------------------------------------------------
+
+data:
+  # Source of training data: "synthetic" (reproducible generator, default)
+  # or "csv" (bring your own file at data.csv_path).
+  source: synthetic
+  csv_path: data/raw/churn.csv
+  n_samples: 20000
+  seed: 42
+  val_size: 0.15
+  test_size: 0.15
+
+features:
+  target: churned
+  id_column: customer_id
+  numeric:
+    - tenure_months
+    - monthly_charges
+    - total_charges
+    - num_services
+    - support_tickets_30d
+    - avg_session_minutes
+  categorical:
+    - contract_type
+    - internet_service
+    - payment_method
+    - promo_active
+    - senior_citizen
+  # Derived features computed by FeatureEngineer (persisted inside the model
+  # pipeline so training and serving stay consistent).
+  derived:
+    - charges_per_month
+    - tickets_per_month
+    - tenure_bucket
+
+validation:
+  strict: true                      # fail the pipeline when a check fails
+  max_missing_ratio: 0.02           # per-column missing-value tolerance
+  max_duplicate_row_ratio: 0.001    # fully duplicated rows tolerance
+  max_duplicate_id_ratio: 0.0       # duplicated customer ids tolerance
+  leakage_corr_threshold: 0.98      # |corr(feature, target)| above this = leakage suspect
+  min_rows: 500
+  min_positive_rate: 0.02
+  max_positive_rate: 0.98
+
+model:
+  name: sentinel-churn
+  # algorithm: logistic_regression | gradient_boosting | random_forest
+  algorithm: gradient_boosting
+  random_state: 42
+  params:
+    gradient_boosting:
+      n_estimators: 200
+      max_depth: 3
+      learning_rate: 0.08
+      subsample: 0.9
+    logistic_regression:
+      C: 1.0
+      max_iter: 2000
+    random_forest:
+      n_estimators: 200
+      max_depth: 8
+      n_jobs: -1
+  # "degraded" scenario: deliberately corrupted training signal, used to demo
+  # the quality gate / rollback with a genuinely bad model (no faked metrics).
+  degraded:
+    label_flip_prob: 0.9            # flip this fraction of training labels
+    subsample_frac: 0.05            # train on this fraction of rows
+
+evaluation:
+  primary_metric: f1
+  min_f1: 0.55
+  min_precision: 0.50
+  min_recall: 0.45
+  min_auc: 0.65
+  # Candidate must also be >= production on the primary metric (when a
+  # production model exists) to pass the promotion gate.
+  require_beat_production: true
+  beat_margin: 0.0
+
+experiment_tracking:
+  # auto = mlflow when importable, otherwise the local JSON tracker.
+  backend: auto
+  local_dir: artifacts/experiments
+  mlflow:
+    enabled: true
+    tracking_uri: ""                # empty = local ./mlruns file store
+    experiment_name: sentinel-churn
+    registered_model_name: sentinel-churn
+
+registry:
+  index_path: models/registry.json
+  sync_to_mlflow: true              # mirror versions into the MLflow model registry

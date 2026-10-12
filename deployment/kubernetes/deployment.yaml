@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sentinel-api
+  namespace: sentinel
+  labels:
+    app: sentinel-api
+spec:
+  # replicas > 1 requires the state PVC below to be ReadWriteMany (see docs).
+  replicas: 1
+  revisionHistoryLimit: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: sentinel-api
+  template:
+    metadata:
+      labels:
+        app: sentinel-api
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8000"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+        - name: api
+          # Replace with your registry image (built from the repo Dockerfile).
+          image: sentinel-api:local
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: sentinel-config
+            - secretRef:
+                name: sentinel-secrets
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 20
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+          volumeMounts:
+            - name: state
+              mountPath: /app/models
+              subPath: models
+            - name: state
+              mountPath: /app/artifacts
+              subPath: artifacts
+            - name: state
+              mountPath: /app/monitoring
+              subPath: monitoring
+      volumes:
+        # Single-node demo storage. For multi-replica clusters, back the
+        # registry/routing/logs with shared storage (PVC ReadWriteMany) or
+        # move the registry to a database/object store — see docs/deployment.md.
+        - name: state
+          persistentVolumeClaim:
+            claimName: sentinel-state

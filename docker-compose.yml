@@ -1,0 +1,106 @@
+# ---------------------------------------------------------------------------
+# Local Sentinel stack:
+#   api        — FastAPI model server (canary-aware)
+#   mlflow     — experiment tracking + model registry UI
+#   prometheus — metrics collection (scrapes api:/metrics)
+#   grafana    — dashboards (provisioned, no manual setup)
+#
+# Run:  docker compose up --build -d
+#       Grafana    http://localhost:3000 (admin / ${GRAFANA_PASSWORD:-admin})
+#       MLflow     http://localhost:5000
+#       API        http://localhost:8000/docs
+#       Prometheus http://localhost:9090
+#
+# The deployment controller is intentionally NOT a long-running container by
+# default — start it on demand with:
+#       docker compose --profile controller up controller
+# ---------------------------------------------------------------------------
+
+name: sentinel
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: sentinel-api:local
+    ports:
+      - "8000:8000"
+    environment:
+      SENTINEL_ENV: production
+      SENTINEL_EXPERIMENT_TRACKING__BACKEND: mlflow
+      SENTINEL_EXPERIMENT_TRACKING__MLFLOW__TRACKING_URI: http://mlflow:5000
+      # Admin token for /admin/* endpoints. Set a real value in .env for
+      # anything beyond a throwaway local demo. Empty = open (logged warning).
+      SENTINEL_SERVING__ADMIN_TOKEN: ${SENTINEL_ADMIN_TOKEN:-}
+    volumes:
+      # Shared operational state: registry, routing, artifacts, logs.
+      - ./models:/app/models
+      - ./artifacts:/app/artifacts
+      - ./monitoring:/app/monitoring
+      - ./data:/app/data
+      - ./reports:/app/reports
+      - ./configs:/app/configs:ro
+    depends_on:
+      - mlflow
+    restart: unless-stopped
+
+  controller:
+    image: sentinel-api:local
+    profiles: ["controller"]
+    command: ["python", "-m", "sentinel.cli", "controller", "--interval", "10"]
+    environment:
+      SENTINEL_ENV: production
+    volumes:
+      - ./models:/app/models
+      - ./artifacts:/app/artifacts
+      - ./monitoring:/app/monitoring
+      - ./data:/app/data
+      - ./reports:/app/reports
+      - ./configs:/app/configs:ro
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  mlflow:
+    build:
+      context: .
+      dockerfile: deployment/docker/Dockerfile.mlflow
+    image: sentinel-mlflow:local
+    ports:
+      - "5000:5000"
+    volumes:
+      - mlflow-data:/mlflow
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:v2.53.0
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./deployment/docker/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:11.1.0
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      # Local-demo default only; override via .env (GRAFANA_PASSWORD=...)
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - ./deployment/docker/grafana/provisioning:/etc/grafana/provisioning:ro
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+
+volumes:
+  mlflow-data:
+  prometheus-data:
+  grafana-data:

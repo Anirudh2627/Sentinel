@@ -1,0 +1,37 @@
+# Development profile — everything local, filesystem-backed.
+env: development
+
+paths:
+  root_dir: .                       # resolved relative to the repository root
+  data_raw: data/raw
+  data_processed: data/processed
+  data_synthetic: data/synthetic
+  models_dir: models
+  artifacts_dir: artifacts
+  monitoring_dir: monitoring
+  reports_dir: reports
+
+serving:
+  host: 127.0.0.1
+  port: 8000
+  log_level: info
+  prediction_log: monitoring/prediction_log.jsonl
+  feedback_log: monitoring/feedback_log.jsonl
+  routing_state_path: artifacts/routing.json
+  admin_token_env: SENTINEL_SERVING__ADMIN_TOKEN
+  routing_reload_interval_seconds: 2
+
+canary:
+  enabled: true
+  initial_traffic_percent: 5
+  promotion_steps: [25, 50, 100]    # traffic ramp; 100 triggers full promotion
+  min_healthy_windows_per_step: 3
+  sticky_routing: true              # hash(request_id) keeps a client on one version
+
+simulation:
+  base_url: http://127.0.0.1:8000
+  requests_per_second: 10
+  concurrency: 4
+  duration_seconds: 30
+  feedback_rate: 0.3                # fraction of requests that get delayed ground truth
+  seed: 7

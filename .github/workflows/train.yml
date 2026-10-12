@@ -1,0 +1,103 @@
+# ---------------------------------------------------------------------------
+# Training pipeline: data validation → training → evaluation → gate.
+#
+# Trigger manually (workflow_dispatch). The job FAILS when the quality gate
+# blocks the model (sentinel exits with code 2), so a bad model can never
+# produce a deployable artifact. Metrics in the job summary are the REAL
+# metrics of that run — nothing is hardcoded.
+# ---------------------------------------------------------------------------
+name: Train
+
+on:
+  workflow_dispatch:
+    inputs:
+      scenario:
+        description: "Training scenario (default | degraded — degraded is for gate demos)"
+        required: false
+        default: default
+        type: choice
+        options: [default, degraded]
+      n_samples:
+        description: "Dataset size (synthetic source)"
+        required: false
+        default: "20000"
+        type: string
+      seed:
+        description: "Data seed (blank = config default)"
+        required: false
+        default: ""
+        type: string
+
+# Uncomment to retrain on a schedule (e.g. nightly):
+# schedule:
+#   - cron: "0 3 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  train-and-gate:
+    name: Train, evaluate & gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run pipeline (train → evaluate → register → gate)
+        env:
+          # CI has no MLflow server; the local tracker records the run.
+          SENTINEL_EXPERIMENT_TRACKING__BACKEND: local
+        run: |
+          ARGS="--scenario ${{ inputs.scenario }} --n-samples ${{ inputs.n_samples }}"
+          if [ -n "${{ inputs.seed }}" ]; then ARGS="$ARGS --seed ${{ inputs.seed }}"; fi
+          PYTHONPATH=src python -m sentinel.cli pipeline $ARGS | tee pipeline_result.json
+          # `sentinel pipeline` exits 2 when the gate blocks — the job fails.
+
+      - name: Write real metrics to job summary
+        if: always()
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json, pathlib
+          p = pathlib.Path("pipeline_result.json")
+          if not p.exists():
+              print("Pipeline did not produce a result file.")
+              raise SystemExit
+          # the CLI prints logs to stderr; stdout is pure JSON
+          try:
+              r = json.loads(p.read_text())
+          except json.JSONDecodeError:
+              print("Pipeline failed before producing JSON output.")
+              raise SystemExit
+          print("## Training result\n")
+          print(f"- run_id: `{r['run_id']}`")
+          print(f"- dataset_version: `{r['dataset_version']}`")
+          print(f"- model_version: `{r.get('model_version')}`")
+          print(f"- gate_passed: **{r.get('gate_passed')}**  {r.get('gate_reason','')}")
+          vm = r.get("val_metrics", {}); tm = r.get("test_metrics", {})
+          print("\n| metric | validation | test |\n|---|---|---|")
+          for k in ("accuracy","precision","recall","f1","roc_auc","log_loss"):
+              if k in vm:
+                  print(f"| {k} | {vm[k]:.4f} | {tm.get(k, float('nan')):.4f} |")
+          PY
+
+      - name: Upload model bundle (registry + artifacts + reports)
+        uses: actions/upload-artifact@v4
+        with:
+          name: sentinel-model-bundle-${{ inputs.scenario }}
+          path: |
+            models/
+            artifacts/runs/
+            artifacts/audit/
+            reports/
+            configs/
+            data/processed/
+          retention-days: 14
+          if-no-files-found: error

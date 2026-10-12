@@ -1,0 +1,134 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "graphTooltip": 1,
+  "links": [],
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "Request rate by model version / status",
+      "description": "Live traffic split — watch the canary share grow during promotion steps.",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "sentinel-prom" },
+      "fieldConfig": {
+        "defaults": { "unit": "reqps", "custom": { "drawStyle": "line", "fillOpacity": 10, "lineWidth": 2 } },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(rate(sentinel_requests_total[1m])) by (model_version, status)",
+          "legendFormat": "{{model_version}} / {{status}}"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "Latency percentiles (p50 / p95 / p99) by model version",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "sentinel-prom" },
+      "fieldConfig": {
+        "defaults": { "unit": "s", "custom": { "drawStyle": "line", "fillOpacity": 5, "lineWidth": 2 } },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "histogram_quantile(0.50, sum(rate(sentinel_request_latency_seconds_bucket[5m])) by (le, model_version))",
+          "legendFormat": "p50 {{model_version}}"
+        },
+        {
+          "refId": "B",
+          "expr": "histogram_quantile(0.95, sum(rate(sentinel_request_latency_seconds_bucket[5m])) by (le, model_version))",
+          "legendFormat": "p95 {{model_version}}"
+        },
+        {
+          "refId": "C",
+          "expr": "histogram_quantile(0.99, sum(rate(sentinel_request_latency_seconds_bucket[5m])) by (le, model_version))",
+          "legendFormat": "p99 {{model_version}}"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "timeseries",
+      "title": "Error rate by model version / type",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "datasource": { "type": "prometheus", "uid": "sentinel-prom" },
+      "fieldConfig": {
+        "defaults": { "unit": "reqps", "custom": { "drawStyle": "bars", "fillOpacity": 40, "lineWidth": 1 } },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(rate(sentinel_errors_total[1m])) by (model_version, error_type)",
+          "legendFormat": "{{model_version}} / {{error_type}}"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "timeseries",
+      "title": "Prediction distribution (class 0 vs 1) by model version",
+      "description": "A canary whose positive-rate diverges from production is a prediction-shift signal.",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+      "datasource": { "type": "prometheus", "uid": "sentinel-prom" },
+      "fieldConfig": {
+        "defaults": { "unit": "reqps", "custom": { "drawStyle": "line", "fillOpacity": 10, "lineWidth": 2 } },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(rate(sentinel_predictions_total[5m])) by (model_version, prediction)",
+          "legendFormat": "{{model_version}} → class {{prediction}}"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "stat",
+      "title": "Canary traffic %",
+      "gridPos": { "h": 5, "w": 6, "x": 0, "y": 16 },
+      "datasource": { "type": "prometheus", "uid": "sentinel-prom" },
+      "fieldConfig": {
+        "defaults": { "unit": "percent", "min": 0, "max": 100, "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "yellow", "value": 1 }, { "color": "orange", "value": 50 } ] } },
+        "overrides": []
+      },
+      "targets": [ { "refId": "A", "expr": "sentinel_canary_traffic_percent" } ]
+    },
+    {
+      "id": 6,
+      "type": "stat",
+      "title": "Delayed-label feedback rate",
+      "gridPos": { "h": 5, "w": 6, "x": 6, "y": 16 },
+      "datasource": { "type": "prometheus", "uid": "sentinel-prom" },
+      "fieldConfig": { "defaults": { "unit": "ops" }, "overrides": [] },
+      "targets": [ { "refId": "A", "expr": "sum(rate(sentinel_feedback_total[5m]))" } ]
+    },
+    {
+      "id": 7,
+      "type": "table",
+      "title": "Deployed models",
+      "gridPos": { "h": 5, "w": 12, "x": 12, "y": 16 },
+      "datasource": { "type": "prometheus", "uid": "sentinel-prom" },
+      "targets": [ { "refId": "A", "expr": "sentinel_model_info", "format": "table", "instant": true } ],
+      "transformations": [
+        { "id": "organize", "options": { "excludeByName": { "Time": true, "Value": true, "__name__": true, "instance": true, "job": true } } }
+      ]
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 39,
+  "tags": ["sentinel", "mlops"],
+  "templating": { "list": [] },
+  "time": { "from": "now-30m", "to": "now" },
+  "timepicker": {},
+  "timezone": "utc",
+  "title": "Sentinel — Model Serving Overview",
+  "uid": "sentinel-overview",
+  "version": 1
+}

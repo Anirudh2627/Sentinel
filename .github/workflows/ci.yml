@@ -1,0 +1,93 @@
+# ---------------------------------------------------------------------------
+# CI: lint, format check, configuration validation, unit + integration tests.
+# Runs on every push / PR. No secrets required. No external services required
+# (tests are fully local: tmp-path registries, in-process API clients).
+# ---------------------------------------------------------------------------
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  quality:
+    name: Lint & format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install tooling
+        run: pip install ruff>=0.4
+
+      - name: Ruff lint
+        run: ruff check src tests scripts
+
+      - name: Ruff format check
+        run: ruff format --check src tests scripts
+
+  config-validation:
+    name: Configuration validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Validate all config profiles load and satisfy the schema
+        run: |
+          python - <<'PY'
+          import sys
+          sys.path.insert(0, "src")
+          from sentinel.config.settings import SentinelSettings
+          for env in ("development", "production"):
+              s = SentinelSettings.load(env)
+              assert s.model.name, "model.name must be set"
+              assert s.canary.promotion_steps[-1] == 100, "promotion ramp must end at 100%"
+              print(f"{env}: OK (env={s.env}, algo={s.model.algorithm}, steps={s.canary.promotion_steps})")
+          PY
+
+      - name: Validate CLI entrypoints import cleanly
+        run: |
+          PYTHONPATH=src python -c "import sentinel.cli.main, sentinel.serving.app, sentinel.pipeline.orchestration; print('imports OK')"
+
+  tests:
+    name: Tests (py${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+
+      - name: Unit tests
+        run: PYTHONPATH=src python -m pytest tests/unit -q
+
+      - name: Integration tests
+        run: PYTHONPATH=src python -m pytest tests/integration -q
+
+      - name: Coverage (informational)
+        run: PYTHONPATH=src python -m pytest tests --cov=src/sentinel --cov-report=term || true

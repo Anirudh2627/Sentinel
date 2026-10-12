@@ -1,0 +1,29 @@
+# Runtime configuration for the serving pods.
+# NOTE: the canary traffic split itself is NOT done here — see README
+# ("Kubernetes"): locally the routing state file drives canary weights; on
+# Kubernetes the same semantics can be delegated to a service mesh / ingress
+# with weighted backends (the manifests below keep the Sentinel-native
+# routing so behaviour is identical everywhere).
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sentinel-config
+  namespace: sentinel
+data:
+  SENTINEL_ENV: "production"
+  SENTINEL_SERVING__HOST: "0.0.0.0"
+  SENTINEL_SERVING__PORT: "8000"
+  SENTINEL_EXPERIMENT_TRACKING__BACKEND: "none"
+  # admin token comes from the Secret below, never from this ConfigMap
+  SENTINEL_SERVING__ADMIN_TOKEN_ENV: "SENTINEL_ADMIN_TOKEN"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: sentinel-secrets
+  namespace: sentinel
+type: Opaque
+stringData:
+  # Placeholder for local clusters ONLY. In a real cluster manage this via
+  # SealedSecrets/External Secrets — never commit real credentials.
+  SENTINEL_ADMIN_TOKEN: "change-me"

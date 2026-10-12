@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sentinel-state
+  namespace: sentinel
+spec:
+  accessModes:
+    - ReadWriteOnce   # use ReadWriteMany (e.g. NFS/EFS) for >1 replica
+  resources:
+    requests:
+      storage: 2Gi

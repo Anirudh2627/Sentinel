@@ -1,0 +1,61 @@
+# ---------------------------------------------------------------------------
+# Monitoring, drift detection and rollback policy.
+# Every threshold used by the deployment controller lives here — nothing is
+# hardcoded in business logic.
+# ---------------------------------------------------------------------------
+
+monitoring:
+  window_seconds: 60                # rolling evaluation window
+  collection_interval_seconds: 10   # controller/monitor polling interval
+  snapshot_path: monitoring/snapshots.jsonl
+  min_samples_for_decision: 30      # don't judge a model on a handful of requests
+
+  # Operational SLOs (per model version)
+  max_error_rate: 0.05
+  max_p95_latency_ms: 500.0
+  max_p99_latency_ms: 1500.0
+
+  # Prediction-distribution shift: |positive_rate(canary) - positive_rate(prod)|
+  prediction_shift:
+    enabled: true
+    max_delta_positive_rate: 0.15
+    min_samples: 50                 # per version; small canary slices are noise
+
+  # Delayed-ground-truth performance (requires /feedback labels)
+  performance:
+    enabled: true
+    min_samples: 50
+    min_auc: 0.60
+
+  # Data drift: reference (training) distribution vs production distribution.
+  # Drift is an *input* signal — it does not automatically mean the model is
+  # broken. Severity decides whether it only alerts or also triggers rollback.
+  drift:
+    enabled: true
+    method: psi                     # psi | ks
+    psi_threshold: 0.25             # 0.1-0.25 = moderate shift, >0.25 = significant
+    ks_threshold: 0.20
+    min_samples: 50
+    severity: warning               # warning = alert only | critical = rollback
+    top_k_features: 5
+
+rollback:
+  enabled: true
+  cooldown_seconds: 300             # no new canary within this window after a rollback
+  audit_path: artifacts/audit/deployment_audit.jsonl
+  # Which violation kinds may trigger an automatic rollback.
+  on_error_rate: true
+  on_latency: true
+  on_prediction_shift: true
+  on_performance: true
+  on_drift: false                   # drift alone defaults to alert-only (see severity)
+  # If production itself violates SLOs and a previous production model exists,
+  # optionally restore that previous version automatically.
+  auto_restore_previous_production: false
+
+faults:
+  # Runtime fault injection hooks (demo tooling). Disabled by default.
+  enabled: false
+  latency_ms: 0
+  error_rate: 0.0
+  latency_jitter: 0.3               # ±30% jitter so injected latency looks realistic

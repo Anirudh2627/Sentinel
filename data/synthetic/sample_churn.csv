@@ -1,0 +1,201 @@
+customer_id,tenure_months,monthly_charges,total_charges,contract_type,internet_service,payment_method,num_services,support_tickets_30d,avg_session_minutes,promo_active,senior_citizen,churned
+C-42-0000000,32,60.13,1896.94,Month-to-month,Fiber optic,Credit card (automatic),3,3,11.28,1,1,1
+C-42-0000001,43,69.24,2998.95,Month-to-month,Fiber optic,Credit card (automatic),5,0,15.56,0,0,1
+C-42-0000002,29,67.24,2044.31,One year,Fiber optic,Bank transfer (automatic),1,0,20.15,1,0,0
+C-42-0000003,26,44.38,1253.65,Month-to-month,DSL,Bank transfer (automatic),6,0,13.02,1,0,1
+C-42-0000004,47,18.0,826.08,Two year,DSL,Electronic check,2,0,10.51,1,0,0
+C-42-0000005,27,52.96,1377.74,One year,Fiber optic,Electronic check,3,0,0.5,1,0,0
+C-42-0000006,36,41.55,1548.17,Month-to-month,Fiber optic,Bank transfer (automatic),2,0,17.85,0,0,0
+C-42-0000007,34,18.0,641.91,Month-to-month,No,Electronic check,3,1,13.32,1,1,1
+C-42-0000008,47,71.67,3251.48,Month-to-month,Fiber optic,Bank transfer (automatic),3,2,7.92,0,1,1
+C-42-0000009,23,65.13,1592.71,One year,No,Credit card (automatic),1,0,14.76,1,0,0
+C-42-0000010,57,92.8,5704.13,Two year,Fiber optic,Electronic check,4,0,10.5,0,0,1
+C-42-0000011,19,57.67,1208.96,Month-to-month,No,Bank transfer (automatic),5,1,10.83,1,0,0
+C-42-0000012,38,44.52,1932.44,Two year,DSL,Electronic check,6,0,17.64,1,1,0
+C-42-0000013,35,53.35,1737.82,Month-to-month,Fiber optic,Credit card (automatic),2,2,5.97,0,0,1
+C-42-0000014,18,52.3,942.45,Two year,No,Electronic check,6,0,20.28,0,0,0
+C-42-0000015,40,40.68,1628.67,Two year,No,Bank transfer (automatic),6,0,5.61,1,0,0
+C-42-0000016,24,27.35,651.25,One year,No,Bank transfer (automatic),6,0,10.02,0,0,0
+C-42-0000017,13,52.33,644.96,One year,DSL,Mailed check,3,0,25.54,1,0,0
+C-42-0000018,43,59.43,2251.78,Two year,Fiber optic,Bank transfer (automatic),6,2,20.76,1,0,0
+C-42-0000019,10,24.37,245.51,Month-to-month,DSL,Bank transfer (automatic),4,1,14.59,1,0,0
+C-42-0000020,15,39.04,549.6,Month-to-month,DSL,Bank transfer (automatic),1,1,8.36,0,0,0
+C-42-0000021,28,71.91,2027.33,Month-to-month,Fiber optic,Bank transfer (automatic),2,2,10.82,0,0,1
+C-42-0000022,47,51.55,2268.94,Month-to-month,Fiber optic,Credit card (automatic),5,0,14.44,1,0,1
+C-42-0000023,41,53.12,1986.32,One year,Fiber optic,Mailed check,1,0,14.23,1,0,0
+C-42-0000024,32,41.56,1354.85,One year,No,Mailed check,3,0,13.45,1,0,1
+C-42-0000025,7,40.25,285.15,Two year,Fiber optic,Electronic check,5,1,13.82,0,0,1
+C-42-0000026,18,43.11,811.94,Month-to-month,No,Credit card (automatic),1,1,12.71,1,0,1
+C-42-0000027,21,48.82,1204.5,One year,DSL,Bank transfer (automatic),3,0,5.35,1,0,0
+C-42-0000028,13,18.0,239.19,Month-to-month,DSL,Mailed check,2,0,10.9,1,1,1
+C-42-0000029,5,72.96,378.96,Month-to-month,Fiber optic,Electronic check,4,1,19.49,0,0,1
+C-42-0000030,29,20.49,542.99,One year,No,Credit card (automatic),2,0,5.79,1,0,0
+C-42-0000031,42,18.0,678.17,Two year,DSL,Mailed check,6,0,12.86,1,0,0
+C-42-0000032,20,28.19,635.19,One year,Fiber optic,Bank transfer (automatic),1,1,9.08,0,0,0
+C-42-0000033,46,28.62,1219.26,Month-to-month,Fiber optic,Electronic check,6,1,14.67,1,0,0
+C-42-0000034,9,47.44,391.3,One year,DSL,Credit card (automatic),5,0,11.67,1,0,0
+C-42-0000035,12,42.07,503.26,Month-to-month,Fiber optic,Electronic check,6,1,22.86,0,0,1
+C-42-0000036,29,23.44,674.86,Two year,No,Electronic check,6,0,17.04,1,0,0
+C-42-0000037,19,58.15,1025.08,One year,Fiber optic,Credit card (automatic),2,0,6.13,1,0,1
+C-42-0000038,40,39.12,1526.62,Month-to-month,DSL,Credit card (automatic),6,1,18.03,1,0,1
+C-42-0000039,36,35.19,1391.43,Month-to-month,No,Electronic check,4,0,9.35,0,0,0
+C-42-0000040,20,63.38,1185.87,Month-to-month,Fiber optic,Mailed check,6,0,10.54,1,0,1
+C-42-0000041,9,36.09,288.6,Two year,No,Bank transfer (automatic),6,0,15.88,1,0,0
+C-42-0000042,18,18.0,348.43,Month-to-month,DSL,Credit card (automatic),4,1,11.05,0,0,1
+C-42-0000043,36,40.44,1513.18,One year,Fiber optic,Mailed check,3,1,19.36,1,0,0
+C-42-0000044,41,18.0,701.36,One year,Fiber optic,Mailed check,1,1,9.35,0,0,0
+C-42-0000045,19,47.15,782.46,One year,DSL,Bank transfer (automatic),1,1,10.29,0,1,0
+C-42-0000046,5,24.92,117.18,Month-to-month,No,Bank transfer (automatic),3,0,10.06,1,0,0
+C-42-0000047,8,56.32,448.59,Two year,DSL,Credit card (automatic),5,1,10.61,0,1,1
+C-42-0000048,35,58.88,2252.98,Month-to-month,DSL,Bank transfer (automatic),4,1,20.6,0,0,1
+C-42-0000049,20,55.15,1011.53,One year,Fiber optic,Electronic check,3,2,17.77,0,0,0
+C-42-0000050,20,37.99,754.66,One year,Fiber optic,Credit card (automatic),2,0,24.26,1,1,0
+C-42-0000051,12,33.73,426.62,One year,No,Credit card (automatic),4,1,27.61,0,0,1
+C-42-0000052,12,24.5,237.99,Two year,No,Credit card (automatic),4,1,7.82,1,0,0
+C-42-0000053,46,37.47,1866.17,Month-to-month,DSL,Electronic check,6,0,14.42,1,0,1
+C-42-0000054,35,69.25,2194.47,Month-to-month,Fiber optic,Electronic check,5,1,6.94,1,0,0
+C-42-0000055,16,27.46,451.03,Month-to-month,DSL,Bank transfer (automatic),4,1,9.33,1,0,1
+C-42-0000056,28,75.0,2141.44,Month-to-month,Fiber optic,Electronic check,6,0,10.22,0,0,1
+C-42-0000057,31,46.19,1556.13,Month-to-month,No,Credit card (automatic),3,1,7.66,0,0,0
+C-42-0000058,70,34.31,2507.55,Month-to-month,Fiber optic,Mailed check,6,0,7.69,1,0,1
+C-42-0000059,11,64.53,574.83,Month-to-month,Fiber optic,Bank transfer (automatic),3,1,13.13,1,0,1
+C-42-0000060,31,73.07,2122.96,Month-to-month,Fiber optic,Credit card (automatic),1,1,6.7,1,0,1
+C-42-0000061,46,40.33,1875.69,Month-to-month,No,Mailed check,3,0,19.05,0,0,0
+C-42-0000062,65,33.28,2129.46,One year,Fiber optic,Mailed check,1,1,8.49,0,0,0
+C-42-0000063,16,31.03,515.45,One year,DSL,Bank transfer (automatic),1,0,30.86,1,1,0
+C-42-0000064,19,46.32,935.66,Month-to-month,Fiber optic,Bank transfer (automatic),6,0,11.29,1,0,1
+C-42-0000065,40,42.77,1794.08,Month-to-month,DSL,Mailed check,5,0,14.43,0,0,0
+C-42-0000066,7,29.3,201.58,Month-to-month,DSL,Bank transfer (automatic),2,2,6.23,1,1,1
+C-42-0000067,33,40.88,1149.78,One year,DSL,Credit card (automatic),6,0,24.24,1,1,1
+C-42-0000068,72,24.65,1710.13,Month-to-month,Fiber optic,Mailed check,1,0,20.72,0,0,0
+C-42-0000069,35,43.33,1567.07,Month-to-month,Fiber optic,Electronic check,2,0,15.78,1,0,0
+C-42-0000070,3,53.47,146.42,Month-to-month,Fiber optic,Mailed check,5,0,5.92,0,1,1
+C-42-0000071,13,100.01,1365.79,Month-to-month,Fiber optic,Mailed check,2,0,15.26,0,0,1
+C-42-0000072,16,18.0,308.93,Month-to-month,No,Electronic check,5,0,7.27,0,0,1
+C-42-0000073,52,73.5,3860.79,One year,Fiber optic,Electronic check,6,0,22.77,1,0,0
+C-42-0000074,23,49.7,862.92,One year,Fiber optic,Bank transfer (automatic),1,1,18.86,1,0,1
+C-42-0000075,5,53.9,241.94,One year,DSL,Mailed check,1,0,14.57,1,0,0
+C-42-0000076,25,40.63,1169.02,One year,No,Credit card (automatic),6,0,0.5,1,0,1
+C-42-0000077,29,54.51,1511.67,One year,DSL,Electronic check,4,2,8.1,0,1,1
+C-42-0000078,18,30.23,457.77,Month-to-month,DSL,Electronic check,4,0,18.13,0,1,0
+C-42-0000079,12,64.67,852.73,One year,No,Bank transfer (automatic),3,1,21.28,0,0,1
+C-42-0000080,72,47.78,3443.84,Month-to-month,Fiber optic,Credit card (automatic),3,0,20.66,1,0,1
+C-42-0000081,46,76.38,3824.05,Month-to-month,Fiber optic,Electronic check,5,0,4.45,1,0,0
+C-42-0000082,48,35.4,1736.85,One year,Fiber optic,Electronic check,4,0,15.81,1,0,0
+C-42-0000083,23,59.42,1416.8,Month-to-month,Fiber optic,Electronic check,1,0,20.09,0,0,0
+C-42-0000084,16,18.2,299.66,Month-to-month,DSL,Bank transfer (automatic),4,0,4.05,0,0,1
+C-42-0000085,18,41.19,782.79,One year,DSL,Mailed check,5,1,13.95,0,0,0
+C-42-0000086,9,59.01,627.85,Two year,DSL,Electronic check,1,0,15.64,0,0,1
+C-42-0000087,69,36.11,2685.14,Two year,DSL,Electronic check,3,0,12.2,0,0,0
+C-42-0000088,24,21.46,449.92,Month-to-month,No,Mailed check,5,0,2.89,1,0,0
+C-42-0000089,60,18.0,1118.59,Month-to-month,DSL,Credit card (automatic),4,0,12.05,1,0,1
+C-42-0000090,19,47.37,982.22,One year,Fiber optic,Bank transfer (automatic),1,0,12.04,0,0,1
+C-42-0000091,35,18.0,690.62,Month-to-month,No,Mailed check,1,0,13.11,0,0,0
+C-42-0000092,30,18.0,521.57,Two year,No,Electronic check,4,2,10.62,1,0,0
+C-42-0000093,8,60.08,525.43,Month-to-month,Fiber optic,Electronic check,3,3,11.34,0,0,1
+C-42-0000094,72,84.24,6515.44,Month-to-month,Fiber optic,Electronic check,6,3,13.76,0,0,1
+C-42-0000095,19,89.07,2040.61,Month-to-month,No,Credit card (automatic),4,0,16.65,1,1,1
+C-42-0000096,10,49.94,469.44,Two year,Fiber optic,Credit card (automatic),6,0,12.17,1,0,0
+C-42-0000097,40,50.84,1951.05,Month-to-month,No,Credit card (automatic),2,0,11.54,1,0,0
+C-42-0000098,26,42.89,1087.83,Month-to-month,No,Credit card (automatic),3,0,14.55,0,1,1
+C-42-0000099,33,35.78,1134.43,Month-to-month,No,Credit card (automatic),1,0,2.47,1,0,1
+C-42-0000100,28,45.29,1177.83,Month-to-month,DSL,Credit card (automatic),4,1,16.86,0,1,1
+C-42-0000101,3,52.61,122.95,Month-to-month,Fiber optic,Electronic check,2,1,14.0,0,0,1
+C-42-0000102,13,43.99,551.98,One year,DSL,Electronic check,3,0,14.24,1,0,1
+C-42-0000103,13,44.15,590.91,Month-to-month,Fiber optic,Mailed check,3,5,19.76,1,0,1
+C-42-0000104,48,18.0,829.91,Two year,No,Bank transfer (automatic),2,0,2.28,0,0,1
+C-42-0000105,27,32.71,1019.91,Two year,Fiber optic,Electronic check,1,0,2.16,1,1,0
+C-42-0000106,37,72.26,2676.48,Month-to-month,Fiber optic,Credit card (automatic),4,2,15.64,0,0,1
+C-42-0000107,20,32.52,717.57,Month-to-month,DSL,Bank transfer (automatic),6,1,13.96,0,0,1
+C-42-0000108,38,27.77,1077.33,One year,No,Bank transfer (automatic),2,0,15.02,0,1,0
+C-42-0000109,23,37.65,923.2,Month-to-month,DSL,Electronic check,3,0,11.23,1,0,0
+C-42-0000110,22,60.81,1367.71,Month-to-month,DSL,Electronic check,2,0,17.99,1,0,1
+C-42-0000111,30,45.25,1506.15,Two year,DSL,Electronic check,5,1,19.6,0,0,0
+C-42-0000112,28,25.69,722.54,Two year,DSL,Credit card (automatic),3,2,16.9,0,0,0
+C-42-0000113,72,69.07,5170.42,One year,Fiber optic,Bank transfer (automatic),6,0,12.44,0,0,1
+C-42-0000114,13,84.43,1129.76,Month-to-month,Fiber optic,Bank transfer (automatic),2,1,1.35,0,0,1
+C-42-0000115,7,46.4,317.31,One year,DSL,Electronic check,1,1,18.62,0,0,1
+C-42-0000116,33,50.53,1721.51,One year,DSL,Mailed check,4,2,21.33,0,0,1
+C-42-0000117,15,55.36,978.83,Month-to-month,DSL,Mailed check,4,0,17.87,1,0,1
+C-42-0000118,3,80.84,237.27,One year,Fiber optic,Credit card (automatic),6,1,8.72,0,0,1
+C-42-0000119,11,44.05,500.81,Month-to-month,DSL,Credit card (automatic),6,0,18.04,0,0,1
+C-42-0000120,72,71.27,5647.78,Month-to-month,Fiber optic,Electronic check,6,0,19.16,1,0,1
+C-42-0000121,13,55.85,792.28,Month-to-month,DSL,Credit card (automatic),4,0,23.35,0,0,1
+C-42-0000122,5,18.0,90.08,Month-to-month,DSL,Electronic check,3,2,8.74,0,1,0
+C-42-0000123,72,68.61,3998.02,Month-to-month,Fiber optic,Credit card (automatic),3,1,12.64,0,0,1
+C-42-0000124,10,31.6,329.06,Two year,Fiber optic,Electronic check,1,0,18.48,0,0,1
+C-42-0000125,72,23.2,1373.81,Two year,DSL,Electronic check,3,2,14.34,0,0,0
+C-42-0000126,20,65.46,1463.16,One year,DSL,Credit card (automatic),3,0,7.3,1,0,0
+C-42-0000127,72,44.62,3256.2,Two year,No,Electronic check,1,0,16.49,0,0,0
+C-42-0000128,22,64.27,1527.02,Two year,DSL,Mailed check,2,1,17.47,1,0,0
+C-42-0000129,35,46.61,1513.62,Month-to-month,Fiber optic,Mailed check,4,0,14.53,1,0,1
+C-42-0000130,24,39.76,835.72,Month-to-month,Fiber optic,Electronic check,3,1,15.32,0,0,0
+C-42-0000131,22,37.67,846.03,Month-to-month,DSL,Bank transfer (automatic),6,0,12.45,0,0,1
+C-42-0000132,31,53.34,1649.09,Month-to-month,Fiber optic,Credit card (automatic),3,0,22.87,0,1,0
+C-42-0000133,36,39.92,1380.61,One year,No,Credit card (automatic),6,0,8.6,0,0,0
+C-42-0000134,29,58.91,1719.96,Month-to-month,No,Mailed check,4,0,10.48,1,0,0
+C-42-0000135,27,40.0,1319.11,Month-to-month,DSL,Bank transfer (automatic),1,2,14.07,1,0,0
+C-42-0000136,15,48.34,773.51,Month-to-month,DSL,Electronic check,2,1,19.27,0,0,0
+C-42-0000137,24,19.7,512.5,Month-to-month,DSL,Electronic check,5,0,5.02,0,0,1
+C-42-0000138,69,68.61,5053.71,Two year,Fiber optic,Electronic check,4,1,6.14,0,0,0
+C-42-0000139,14,51.56,807.27,Month-to-month,Fiber optic,Credit card (automatic),2,2,1.77,1,1,1
+C-42-0000140,31,24.0,732.69,Month-to-month,DSL,Credit card (automatic),4,0,14.2,1,0,0
+C-42-0000141,56,33.26,1556.39,Month-to-month,DSL,Credit card (automatic),6,0,7.29,0,0,0
+C-42-0000142,36,35.18,1247.37,Month-to-month,No,Mailed check,3,0,11.69,0,1,1
+C-42-0000143,48,37.14,1898.49,One year,DSL,Mailed check,1,0,17.97,0,0,0
+C-42-0000144,10,83.38,769.11,Month-to-month,Fiber optic,Bank transfer (automatic),2,0,10.15,0,0,1
+C-42-0000145,32,49.73,1568.91,Month-to-month,Fiber optic,Bank transfer (automatic),6,3,15.39,0,1,1
+C-42-0000146,21,33.11,656.83,Month-to-month,DSL,Mailed check,5,0,12.2,0,0,1
+C-42-0000147,22,18.0,443.58,Two year,DSL,Electronic check,6,0,18.03,0,0,0
+C-42-0000148,66,21.4,1497.08,One year,DSL,Electronic check,6,0,16.85,0,0,0
+C-42-0000149,22,29.26,677.27,One year,No,Credit card (automatic),1,1,9.85,0,1,0
+C-42-0000150,32,25.15,844.82,One year,DSL,Mailed check,2,0,12.99,1,0,1
+C-42-0000151,5,62.37,310.92,One year,DSL,Credit card (automatic),1,1,20.26,1,0,0
+C-42-0000152,72,43.53,3183.69,Month-to-month,DSL,Electronic check,1,0,16.36,0,0,0
+C-42-0000153,46,60.69,2527.04,Month-to-month,DSL,Bank transfer (automatic),6,0,5.62,0,0,1
+C-42-0000154,25,48.11,992.37,Month-to-month,Fiber optic,Electronic check,6,2,17.93,1,0,1
+C-42-0000155,20,38.17,772.57,Month-to-month,DSL,Electronic check,1,3,7.49,1,0,0
+C-42-0000156,39,54.4,2176.59,Two year,Fiber optic,Electronic check,5,0,22.48,0,0,1
+C-42-0000157,56,47.07,2890.92,Month-to-month,Fiber optic,Electronic check,4,1,20.14,1,1,1
+C-42-0000158,72,60.44,4898.72,One year,No,Credit card (automatic),1,1,15.74,0,1,1
+C-42-0000159,45,18.0,911.74,Two year,DSL,Mailed check,6,0,14.94,0,0,0
+C-42-0000160,27,18.0,447.2,Month-to-month,No,Bank transfer (automatic),6,2,12.75,1,0,1
+C-42-0000161,50,46.22,2245.87,Two year,Fiber optic,Mailed check,4,0,18.07,1,0,0
+C-42-0000162,44,46.76,2136.5,One year,DSL,Mailed check,5,1,11.78,1,0,1
+C-42-0000163,28,63.92,2152.28,Two year,Fiber optic,Bank transfer (automatic),3,2,15.41,0,0,0
+C-42-0000164,43,47.02,2261.26,Month-to-month,No,Electronic check,5,0,19.23,1,1,0
+C-42-0000165,43,26.08,1221.87,Month-to-month,DSL,Credit card (automatic),3,0,10.63,0,1,0
+C-42-0000166,25,56.84,1376.92,Month-to-month,No,Credit card (automatic),6,0,10.3,1,0,1
+C-42-0000167,17,74.54,1177.65,Month-to-month,Fiber optic,Bank transfer (automatic),1,1,6.83,0,0,1
+C-42-0000168,40,63.81,2713.49,Month-to-month,Fiber optic,Mailed check,2,1,7.61,0,0,1
+C-42-0000169,11,55.83,560.05,Two year,No,Electronic check,6,2,3.03,1,0,1
+C-42-0000170,9,60.91,537.73,One year,Fiber optic,Credit card (automatic),2,2,18.38,1,0,1
+C-42-0000171,33,19.39,633.99,Month-to-month,No,Mailed check,2,0,24.85,1,0,1
+C-42-0000172,40,54.56,2460.51,Month-to-month,DSL,Electronic check,5,3,22.55,0,0,1
+C-42-0000173,32,40.49,1258.91,Month-to-month,No,Mailed check,2,1,4.24,0,0,0
+C-42-0000174,35,60.52,1704.85,Month-to-month,Fiber optic,Credit card (automatic),4,1,18.35,1,0,1
+C-42-0000175,39,73.01,2962.3,Two year,DSL,Bank transfer (automatic),2,1,22.53,1,0,0
+C-42-0000176,66,18.0,1121.56,Month-to-month,Fiber optic,Bank transfer (automatic),2,0,11.26,0,1,0
+C-42-0000177,46,18.0,830.82,Month-to-month,DSL,Credit card (automatic),6,1,14.61,1,1,1
+C-42-0000178,45,18.0,804.38,One year,DSL,Electronic check,2,1,1.95,1,0,0
+C-42-0000179,31,35.46,1075.19,Month-to-month,DSL,Credit card (automatic),1,2,15.6,0,0,1
+C-42-0000180,32,55.92,1902.58,Month-to-month,Fiber optic,Mailed check,5,1,7.62,1,0,1
+C-42-0000181,23,18.0,363.23,One year,DSL,Bank transfer (automatic),6,1,15.2,1,1,0
+C-42-0000182,34,24.27,791.05,One year,DSL,Electronic check,1,1,4.63,1,0,0
+C-42-0000183,11,45.0,522.09,Two year,Fiber optic,Credit card (automatic),5,0,17.26,1,0,1
+C-42-0000184,66,104.73,6572.61,One year,Fiber optic,Electronic check,4,1,20.15,0,0,1
+C-42-0000185,13,83.93,950.66,Month-to-month,Fiber optic,Electronic check,5,0,9.3,1,1,1
+C-42-0000186,46,25.59,1240.1,One year,DSL,Mailed check,1,0,7.18,1,0,1
+C-42-0000187,61,31.96,2124.72,Two year,No,Electronic check,6,0,1.06,1,0,1
+C-42-0000188,46,39.81,1824.67,One year,Fiber optic,Electronic check,4,1,12.4,1,0,0
+C-42-0000189,72,18.0,1092.7,Two year,DSL,Bank transfer (automatic),6,0,10.51,0,0,0
+C-42-0000190,3,44.4,140.72,One year,DSL,Mailed check,3,1,4.69,0,1,1
+C-42-0000191,18,29.04,453.31,Two year,Fiber optic,Credit card (automatic),6,1,16.72,0,0,0
+C-42-0000192,60,40.47,2488.19,Month-to-month,DSL,Mailed check,4,3,11.3,1,0,0
+C-42-0000193,9,18.2,152.17,One year,Fiber optic,Bank transfer (automatic),1,1,7.55,1,0,0
+C-42-0000194,14,24.78,314.73,Month-to-month,No,Mailed check,6,0,10.67,1,0,0
+C-42-0000195,37,44.68,1594.72,One year,DSL,Bank transfer (automatic),5,0,20.43,0,0,0
+C-42-0000196,27,53.09,1412.41,One year,DSL,Bank transfer (automatic),2,0,17.62,1,0,0
+C-42-0000197,36,41.51,1417.35,Two year,No,Mailed check,4,2,13.22,0,0,0
+C-42-0000198,29,23.23,705.4,Two year,Fiber optic,Credit card (automatic),3,1,17.71,0,0,0
+C-42-0000199,31,48.38,1446.26,Month-to-month,DSL,Mailed check,4,0,7.03,1,0,0

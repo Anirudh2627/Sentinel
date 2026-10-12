@@ -1,0 +1,46 @@
+# Production profile — stricter SLOs, longer canary soak, same code paths.
+# Paths assume the container layout from deployment/docker.
+env: production
+
+paths:
+  root_dir: .
+  data_raw: data/raw
+  data_processed: data/processed
+  data_synthetic: data/synthetic
+  models_dir: models
+  artifacts_dir: artifacts
+  monitoring_dir: monitoring
+  reports_dir: reports
+
+serving:
+  host: 0.0.0.0
+  port: 8000
+  log_level: info
+  prediction_log: monitoring/prediction_log.jsonl
+  feedback_log: monitoring/feedback_log.jsonl
+  routing_state_path: artifacts/routing.json
+  admin_token_env: SENTINEL_SERVING__ADMIN_TOKEN
+  routing_reload_interval_seconds: 2
+
+canary:
+  enabled: true
+  initial_traffic_percent: 5
+  promotion_steps: [10, 25, 50, 100]
+  min_healthy_windows_per_step: 6
+  sticky_routing: true
+
+monitoring:
+  window_seconds: 300
+  max_error_rate: 0.02
+  max_p95_latency_ms: 250.0
+  max_p99_latency_ms: 800.0
+  drift:
+    psi_threshold: 0.20
+
+simulation:
+  base_url: http://127.0.0.1:8000
+  requests_per_second: 20
+  concurrency: 8
+  duration_seconds: 60
+  feedback_rate: 0.3
+  seed: 7
